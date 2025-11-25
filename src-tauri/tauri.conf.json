@@ -7,7 +7,7 @@
   },
   "package": {
     "productName": "RoundFrame",
-    "version": "1.0.2"
+    "version": "1.0.3"
   },
   "tauri": {
     "allowlist": {
@@ -75,7 +75,17 @@
       "windows": {
         "certificateThumbprint": null,
         "digestAlgorithm": "sha256",
-        "timestampUrl": ""
+        "timestampUrl": "",
+        "nsis": {
+          "installMode": "currentUser",
+          "createDesktopShortcut": true,
+          "createStartMenuShortcut": true,
+          "installerIcon": "icons/icon.ico",
+          "headerImage": "icons/icon.ico",
+          "sidebarImage": "icons/icon.ico",
+          "displayLanguageSelector": false,
+          "language": "en-US"
+        }
       }
     },
     "security": {
