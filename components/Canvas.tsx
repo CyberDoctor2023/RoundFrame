@@ -150,8 +150,8 @@ const Canvas: React.FC<CanvasProps> = ({ settings, image, onUpload, setExportFn,
         const isTransparentMode = settings.background === 'transparent' || settings.backgroundType === 'custom';
 
         try {
-          // 使用 Canvas API 直接渲染（无需等待 DOM）
-          const dataUrl = await exportToCanvas(
+          // 使用 Canvas API 直接渲染，返回 Blob（避免 base64 编解码）
+          const blob = await exportToCanvas(
             settings,
             image,
             layout,
@@ -160,7 +160,7 @@ const Canvas: React.FC<CanvasProps> = ({ settings, image, onUpload, setExportFn,
           );
 
           // 检查渲染结果是否有效
-          if (!dataUrl || dataUrl.length < 100) {
+          if (!blob || blob.size === 0) {
             throw new Error("Rendered image data is invalid");
           }
 
@@ -176,10 +176,9 @@ const Canvas: React.FC<CanvasProps> = ({ settings, image, onUpload, setExportFn,
 
             if (filePath) {
               try {
-                const base64Data = dataUrl.replace(/^data:image\/\w+;base64,/, "");
-                // 使用更高效的方法转换 base64 为 Uint8Array，避免大循环阻塞主线程
-                const binaryString = atob(base64Data);
-                const bytes = Uint8Array.from(binaryString, c => c.charCodeAt(0));
+                // 直接从 Blob 转为 ArrayBuffer，跳过 base64
+                const arrayBuffer = await blob.arrayBuffer();
+                const bytes = new Uint8Array(arrayBuffer);
                 await writeBinaryFile(filePath, bytes);
                 console.log('Export completed successfully');
               } catch (writeErr) {
@@ -189,15 +188,16 @@ const Canvas: React.FC<CanvasProps> = ({ settings, image, onUpload, setExportFn,
             }
           } else {
             // 浏览器环境：使用 <a> 标签下载
+            const blobUrl = URL.createObjectURL(blob);
             const link = document.createElement('a');
-            link.href = dataUrl;
+            link.href = blobUrl;
             link.download = 'snapwrap.png';
             document.body.appendChild(link);
             link.click();
             // 延迟移除，确保下载触发
             setTimeout(() => {
               document.body.removeChild(link);
-              URL.revokeObjectURL(dataUrl); // 释放内存
+              URL.revokeObjectURL(blobUrl); // 释放内存
             }, 100);
             console.log('Export completed successfully');
           }

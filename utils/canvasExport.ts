@@ -254,7 +254,7 @@ export async function exportToCanvas(
     layout: ExportLayout,
     palette: string[],
     auroraGradient: { top: string, bottom: string } | null
-): Promise<string> {
+): Promise<Blob> {
     // 加载图片
     const img = new Image();
     img.crossOrigin = 'Anonymous';
@@ -295,5 +295,14 @@ export async function exportToCanvas(
     // 绘制图片卡片（带阴影）
     await drawImageCard(ctx, img, settings, layout, margin);
 
-    return canvas.toDataURL('image/png');
+    // 直接返回 Blob，避免 base64 编解码
+    return new Promise((resolve, reject) => {
+        canvas.toBlob((blob) => {
+            if (blob) {
+                resolve(blob);
+            } else {
+                reject(new Error('Failed to create blob from canvas'));
+            }
+        }, 'image/png');
+    });
 }
