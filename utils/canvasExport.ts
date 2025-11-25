@@ -268,10 +268,10 @@ export async function exportToCanvas(
 
     // 创建 Canvas
     const canvas = document.createElement('canvas');
-    canvas.width = canvasW * 2; // 2x for retina
-    canvas.height = canvasH * 2;
+    canvas.width = canvasW;
+    canvas.height = canvasH;
     const ctx = canvas.getContext('2d')!;
-    ctx.scale(2, 2);
+    // ctx.scale(2, 2); // Removed 2x scaling
 
     // 绘制背景
     drawBackground(ctx, settings, layout, margin, palette, auroraGradient);
