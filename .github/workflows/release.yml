@@ -25,13 +25,22 @@ jobs:
         run: npm install
       - name: Build application
         run: npm run tauri build
+      - name: Create Custom DMG
+        if: matrix.platform == 'macos-latest'
+        run: |
+          npm install -g appdmg
+          cd src-tauri
+          # Remove auto-generated DMG to avoid confusion/duplication
+          rm -f target/release/bundle/dmg/*.dmg
+          # Create custom DMG
+          appdmg dmg.json target/release/bundle/dmg/RoundFrame_Installer.dmg
       - name: Create Release and Upload Assets (MacOS)
         if: matrix.platform == 'macos-latest'
         uses: softprops/action-gh-release@v2
         with:
           draft: true
           prerelease: false
-          files: src-tauri/target/release/bundle/dmg/*.dmg
+          files: src-tauri/target/release/bundle/dmg/RoundFrame_Installer.dmg
         env:
           GITHUB_TOKEN: ${{ secrets.RELEASE_TOKEN }}
       - name: Create Release and Upload Assets (Windows)

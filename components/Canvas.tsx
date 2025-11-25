@@ -175,13 +175,17 @@ const Canvas: React.FC<CanvasProps> = ({ settings, image, onUpload, setExportFn,
             });
 
             if (filePath) {
-              const base64Data = dataUrl.replace(/^data:image\/\w+;base64,/, "");
-              const binaryString = atob(base64Data);
-              const bytes = new Uint8Array(binaryString.length);
-              for (let i = 0; i < binaryString.length; i++) {
-                bytes[i] = binaryString.charCodeAt(i);
+              try {
+                const base64Data = dataUrl.replace(/^data:image\/\w+;base64,/, "");
+                // 使用更高效的方法转换 base64 为 Uint8Array，避免大循环阻塞主线程
+                const binaryString = atob(base64Data);
+                const bytes = Uint8Array.from(binaryString, c => c.charCodeAt(0));
+                await writeBinaryFile(filePath, bytes);
+                console.log('Export completed successfully');
+              } catch (writeErr) {
+                console.error('File write error:', writeErr);
+                throw writeErr;
               }
-              await writeBinaryFile(filePath, bytes);
             }
           } else {
             // 浏览器环境：使用 <a> 标签下载
@@ -190,13 +194,23 @@ const Canvas: React.FC<CanvasProps> = ({ settings, image, onUpload, setExportFn,
             link.download = 'snapwrap.png';
             document.body.appendChild(link);
             link.click();
-            document.body.removeChild(link);
+            // 延迟移除，确保下载触发
+            setTimeout(() => {
+              document.body.removeChild(link);
+              URL.revokeObjectURL(dataUrl); // 释放内存
+            }, 100);
+            console.log('Export completed successfully');
           }
         } catch (err) {
-          console.error('Export failed', err);
-          alert('导出失败，请重试');
+          console.error('Export failed:', err);
+          const errorMsg = err instanceof Error ? err.message : '未知错误';
+          alert(`导出失败：${errorMsg}\n\n请重试或检查磁盘空间`);
         } finally {
-          setIsExporting(false); // 解锁
+          // 确保状态重置，即使发生错误
+          setTimeout(() => {
+            setIsExporting(false);
+            console.log('Export process completed, state reset');
+          }, 50);
         }
       }
     });

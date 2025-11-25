@@ -71,7 +71,7 @@
       "shortDescription": "Beautiful image frame editor",
       "targets": [
         "nsis",
-        "dmg"
+        "app"
       ],
       "windows": {
         "certificateThumbprint": null,
