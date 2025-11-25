@@ -7,7 +7,7 @@
   },
   "package": {
     "productName": "RoundFrame",
-    "version": "1.0.3"
+    "version": "1.0.4"
   },
   "tauri": {
     "allowlist": {
@@ -77,14 +77,7 @@
         "digestAlgorithm": "sha256",
         "timestampUrl": "",
         "nsis": {
-          "installMode": "currentUser",
-          "createDesktopShortcut": true,
-          "createStartMenuShortcut": true,
-          "installerIcon": "icons/icon.ico",
-          "headerImage": "icons/icon.ico",
-          "sidebarImage": "icons/icon.ico",
-          "displayLanguageSelector": false,
-          "language": "en-US"
+          "installMode": "currentUser"
         }
       }
     },
