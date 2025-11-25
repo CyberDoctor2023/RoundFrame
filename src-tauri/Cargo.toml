@@ -1,0 +1,24 @@
+[package]
+name = "roundframe"
+version = "1.0.0"
+description = "A beautiful, modern image frame editor with AI-powered styling suggestions"
+authors = ["RoundFrame Team"]
+edition = "2021"
+
+# 👇👇👇 之前漏掉就是这一块！👇👇👇
+[lib]
+name = "app_lib"
+crate-type = ["staticlib", "cdylib", "rlib"]
+# 👆👆👆 加上它，main.rs 就能找到 app_lib 了 👆👆👆
+
+[build-dependencies]
+tauri-build = { version = "1.5", features = [] }
+
+[dependencies]
+tauri = { version = "1.5", features = [ "fs-remove-file", "fs-copy-file", "fs-write-file", "fs-exists", "fs-remove-dir", "dialog-save", "fs-rename-file", "fs-read-dir", "dialog-open", "path-all", "fs-create-dir", "fs-read-file", "shell-open" ] }
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+
+[features]
+# 必须开启这个功能才能打包网页资源
+custom-protocol = ["tauri/custom-protocol"]

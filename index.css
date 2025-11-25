@@ -1,0 +1,58 @@
+@import "tailwindcss";
+
+@font-face {
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 400;
+    font-display: swap;
+    src: url('/fonts/Inter-Regular.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 700;
+    font-display: swap;
+    src: url('/fonts/Inter-Bold.ttf') format('truetype');
+}
+
+@layer base {
+    :root {
+        font-family: 'Inter', system-ui, Avenir, Helvetica, Arial, sans-serif;
+        --mac-bg: #f5f5f7;
+        --mac-text: #1d1d1f;
+        --mac-subtext: #86868b;
+        --mac-border: #d2d2d7;
+        --mac-accent: #0071e3;
+    }
+
+    * {
+        border-color: #e5e5e5;
+    }
+
+    body {
+        background-color: var(--mac-bg);
+        color: var(--mac-text);
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+    }
+}
+
+@layer utilities {
+    .custom-scrollbar::-webkit-scrollbar {
+        width: 8px;
+    }
+
+    .custom-scrollbar::-webkit-scrollbar-track {
+        background: transparent;
+    }
+
+    .custom-scrollbar::-webkit-scrollbar-thumb {
+        background: #e5e5e5;
+        border-radius: 4px;
+    }
+
+    .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+        background: #d1d1d1;
+    }
+}

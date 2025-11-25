@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>圆角描边 - RoundFrame</title>
+  <link rel="icon" href="/app-icon.png" />
+  <style>
+    :root {
+      --mac-accent: rgba(0, 0, 0, 0.5);
+      /* Default transparent glass */
+    }
+  </style>
+  <link rel="stylesheet" href="/index.css">
+</head>
+
+<body
+  class="bg-gray-100 text-mac-text antialiased h-screen overflow-hidden selection:bg-mac-accent selection:text-white transition-colors duration-1000">
+  <div id="root" class="h-full"></div>
+  <script type="module" src="/index.tsx"></script>
+</body>
+
+</html>
