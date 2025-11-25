@@ -70,8 +70,7 @@
       "resources": [],
       "shortDescription": "Beautiful image frame editor",
       "targets": [
-        "nsis",
-        "app"
+        "nsis"
       ],
       "windows": {
         "certificateThumbprint": null,

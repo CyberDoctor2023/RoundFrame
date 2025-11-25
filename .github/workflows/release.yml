@@ -23,8 +23,12 @@ jobs:
         uses: dtolnay/rust-toolchain@stable
       - name: Install Node dependencies
         run: npm install
-      - name: Build application
-        run: npm run tauri build
+      - name: Build application (MacOS)
+        if: matrix.platform == 'macos-latest'
+        run: npm run tauri build -- --bundles app
+      - name: Build application (Windows)
+        if: matrix.platform == 'windows-latest'
+        run: npm run tauri build -- --bundles nsis
       - name: Create Custom DMG
         if: matrix.platform == 'macos-latest'
         run: |
