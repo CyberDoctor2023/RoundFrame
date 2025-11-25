@@ -32,6 +32,8 @@ jobs:
           cd src-tauri
           # Remove auto-generated DMG to avoid confusion/duplication
           rm -f target/release/bundle/dmg/*.dmg
+          # Create output directory if it doesn't exist
+          mkdir -p target/release/bundle/dmg
           # Create custom DMG
           appdmg dmg.json target/release/bundle/dmg/RoundFrame_Installer.dmg
       - name: Create Release and Upload Assets (MacOS)
