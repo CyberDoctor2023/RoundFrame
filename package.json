@@ -1,7 +1,7 @@
 {
   "name": "roundframe",
   "productName": "RoundFrame",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "A beautiful, modern image frame editor built with React, Vite, and Tauri",
   "author": "RoundFrame Team",
   "license": "MIT",
